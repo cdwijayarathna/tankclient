@@ -36,7 +36,7 @@ public class Game extends BasicGame {
     LinkedList<Water> waterarray;
     ArrayList<Coin> coinarray;
     ArrayList<LifePack> lifearray;
-    //String bricksArr[], stonesArr[], waterArr[];
+    
     SpriteSheet mapsheet;
     SpriteSheet tanks;
     SpriteSheet stonesheet;
@@ -45,11 +45,12 @@ public class Game extends BasicGame {
     int x;
     int y;
     
-    Timer tm;
+    
        
 
     public Game() {
-        super("Tank Wars");
+        
+        super("Tank wars - Let the war begins");
 
         tankarray = new LinkedList<Tank>();
         brickarray = new LinkedList<Brick>();
@@ -60,7 +61,7 @@ public class Game extends BasicGame {
              
         
     }
-
+//Initialize the resources
     @Override
     public void init(GameContainer gc) throws SlickException {
         gameMap = new TiledMap("Images/gameMap.tmx");
@@ -85,6 +86,7 @@ public class Game extends BasicGame {
         
     }
 
+    //update the 
     @Override
     public void update(GameContainer gc, int delta) throws SlickException {
 
@@ -97,6 +99,7 @@ public class Game extends BasicGame {
 
     }
 
+    //Render the screen and map to frames
     @Override
     public void render(GameContainer gc, Graphics grphcs) throws SlickException {
 
@@ -110,7 +113,7 @@ public class Game extends BasicGame {
         Coin cp;
         LifePack lif;
 
-        
+        //load the bricks into the map 
         if (!brickarray.isEmpty()) {
             
             for (int i = 0; i < brickarray.size(); i++) {
@@ -119,63 +122,37 @@ public class Game extends BasicGame {
 
             }
         }
-
+        
+        //load the stones into the map
         if (!stonearray.isEmpty()) {
             for (int i = 0; i < stonearray.size(); i++) {
                 stn = stonearray.get(i);
                 stone.draw((float) stn.getxCord() * 32, (float) stn.getyCord() * 32);
             }
         }
-
+        
+        //load the water into the map
         if (!waterarray.isEmpty()) {
             for (int i = 0; i < waterarray.size(); i++) {
                 wtr = waterarray.get(i);
                 water.draw((float) wtr.getX() * 32, (float) wtr.getY() * 32);
             }
         }
-
+        
+        //load the tank images to tha map if it is not dead
         if (!tankarray.isEmpty()) {
             for (int i = 0; i < tankarray.size(); i++) {
                 tnk = tankarray.get(i);
+                if(tnk.getHealth()>0)
+                {
                 tnk.getTankImg().draw((float) tnk.getX_cordination() * 32, (float) tnk.getY_cordination() * 32);
-                                
-                /*int x2,y2;     
-                x2=tnk.getX_cordination();
-                y2=tnk.getY_cordination();
-        
-                    if(tnk.getWhether_shot()==1)
-                    {
-                        if(tnk.getDiretion()==1&&x2!=19)
-                        {
-                            bullet.setRotation(0);
-                            bullet.draw((x2+1)*32,y2,32,32);                
-
-                        }
-                        else if(tnk.getDiretion()==2&&y2!=19)
-                        {                
-                                bullet.setRotation(90);
-                                bullet.draw(x2*32,(y2+1)*32,32,32);
-
-
-                        }
-                        else if(tnk.getDiretion()==3&&x2!=0)
-                        {                
-                                bullet.setRotation(180);
-                                bullet.draw((x2-1)*32,y2*32,32,32);                       
-
-                        }
-                        else if(tnk.getDiretion()==0&&y2!=0)
-                        {               
-                                bullet.setRotation(270);
-                                bullet.draw(x2*32,(y2-1)*32,32,32);                                       
-
-                        }
-
-                     }*/
+                } 
+                
             }
 
         }
-
+        
+        //load the coins into the map
         if (!coinarray.isEmpty()) {
             for (int i = 0; i < coinarray.size(); i++) {
                 cp = coinarray.get(i);
@@ -185,6 +162,7 @@ public class Game extends BasicGame {
             }
         }
 
+        //load the life packs into the map
         if (!lifearray.isEmpty()) {
             for (int i = 0; i < lifearray.size(); i++) {
                 lif = lifearray.get(i);
@@ -193,12 +171,15 @@ public class Game extends BasicGame {
                 
             }
         }
+        
         for (int a = 0; a <= 640; a += 32) {
             grphcs.drawLine(0, a, 640, a);
             grphcs.drawLine(a, 0, a, 640);
         }
         
         grphcs.setColor(Color.white);
+        
+        // Draw the score board
         
         for(int k=22;k<=34;k+=3)
         {
@@ -224,7 +205,7 @@ public class Game extends BasicGame {
         tankDisplay.draw(23*32,11*32,10*32,6*32);
                      
         int a1=5;
-        
+        //update the current points, coins and health to the score board
         for(int b=0;b<tankarray.size();b++)
         {
             try{
@@ -249,12 +230,12 @@ public class Game extends BasicGame {
 
     
   
-
+    //Display function take the map details, tank details, coin details,life pack details as a parameter and load them for draw
     public void display(int[][] maparr, int[][] tankarr, ArrayList<Coin> coinP, ArrayList<LifePack> lifeP) 
     {
         this.coinarray=coinP;;
         this.lifearray.clear();
-        System.out.println(lifearray.size()+"+++++++++++++++++");
+       
         Tank tanki;
         this.tankarray.clear();
 
@@ -285,7 +266,7 @@ public class Game extends BasicGame {
         }
        
              
-        for (int a = 0; a < 5; a++) {
+        for (int a = 0; a < tankarr.length; a++) {
             
             if (a == 0) {
                 tanki = new Tank(tank0);
@@ -327,7 +308,7 @@ public class Game extends BasicGame {
             this.tankarray.add(tanki);
            
         }
-        System.out.println(lifeP.size()+"*****************");
+        
         for(int n=0;n<lifeP.size();n++)
         {
             this.lifearray.add(lifeP.get(n));
